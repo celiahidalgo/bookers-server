@@ -1,16 +1,15 @@
-# CICEchat Authenticator
+# Bookers
 
-```
-npm i && npm start
-```
+~npm i
+~npm start
 
 ### VARIABLES DE ENTORNO
 
-- GOOGLE_CLIENT_ID
-- GOOGLE_CLIENT_SECRET
-- GOOGLE_CALLBACK_URL
-- JTW_KEY
-- CLIENT_URL
-- PORT
-- MONGO_URL
-- MONGO_PORT
+GOOGLE_CLIENT_ID =
+GOOGLE_CLIENT_SECRET =
+GOOGLE_CALLBACK_URL =
+CLIENT_URL = default --> http://localhost:3000
+PORT = default --> 3001
+MONGO_URL =
+MONGO_PORT =
+JWT_KEY = whatever

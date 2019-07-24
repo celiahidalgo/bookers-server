@@ -1,39 +1,50 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
 const app = express();
+
 const GoogleStrategy = require("./strategies/google");
-const jwtMiddleware = require("./middlewares/jwt");
-const UserModel = require("./models/User");
+const LocalStrategy = require("./strategies/local");
+
+const usersAuth = require("./routes/auth");
+const signupRouter = require("./routes/signup");
+const usersRouter = require("./routes/user");
 
 app.use(passport.initialize());
 passport.use(GoogleStrategy);
+passport.use(LocalStrategy);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/google", passport.authenticate("google", { scope: ["profile"], session: false }));
-app.get("/google/callback", passport.authenticate("google", { scope: ["profile"], session: false }), (req, res) => {
-
-    jwt.sign({ userId: req.user._id }, process.env.JTW_KEY, (err, token) => {
-        if (err) throw err;
-
-        return res.redirect(`${process.env.CLIENT_URL}/chat.html?token=${token}`);
-    })
+app.all("*", function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
 });
 
-app.get("/userdata", jwtMiddleware, async (req, res) => {
-    const user = await UserModel.findOne({_id: req.userId});
+app.use("/google", usersAuth);
+app.use("/signup", signupRouter);
+app.use("/user", usersRouter);
 
-    if (!user) {
-        return res.status(400).send();
-    }
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
-    return res.status(200).json({user});
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.json({
+    error: err
+  });
 });
 
 module.exports = app;
-
