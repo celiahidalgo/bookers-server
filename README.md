@@ -12,4 +12,4 @@
 - PORT = default --> 3001
 - MONGO_URL =
 - MONGO_PORT =
-vJWT_KEY = whatever
+- JWT_KEY = whatever
