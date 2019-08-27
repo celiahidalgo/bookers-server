@@ -10,6 +10,7 @@ const LocalStrategy = require("./strategies/local");
 const usersAuth = require("./routes/auth");
 const signupRouter = require("./routes/signup");
 const usersRouter = require("./routes/user");
+const booksRouter = require("./routes/books");
 
 app.use(passport.initialize());
 passport.use(GoogleStrategy);
@@ -28,6 +29,7 @@ app.all("*", function(req, res, next) {
 app.use("/google", usersAuth);
 app.use("/signup", signupRouter);
 app.use("/user", usersRouter);
+app.use("/books", booksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
