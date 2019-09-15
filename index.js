@@ -13,7 +13,10 @@ server.listen(PORT, () => {
 
   mongoose.connect(
     `mongodb://${MONGO_URL}:${MONGO_PORT}/bookers`,
-    { useNewUrlParser: true },
+    {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    },
     () => {
       console.log(chalk.bgGreen("MONGODB RUNNING @", MONGO_PORT));
     }

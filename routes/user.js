@@ -1,26 +1,23 @@
 var express = require("express");
 var router = express.Router();
 const jwtMiddleware = require("../middlewares/jwt");
-const UserModel = require("../models/User");
+const UserController = require('../controllers/user.controller');
 
-router.get("/", async (req, res) => {
-  const users = await UserModel.find({ user: req.user });
-  if (!users) {
-    console.log(users);
-    return res.status(400).send();
-  }
+router.route('/')
+  .get(UserController.userGET);
 
-  return res.status(200).json({ users });
-});
+router.route('/signup')
+  .post(UserController.userPOST);
 
-router.get("/:id", jwtMiddleware, async (req, res) => {
-  const user = await UserModel.findOne({ "user._id": req.params.userId });
-  if (!user) {
-    console.log(user);
-    return res.status(400).send();
-  }
+router.route('/:id', jwtMiddleware)
+  .get(UserController.userIdGET);
 
-  return res.status(200).json({ user });
-});
+router.route('login/:id')
+  .get(UserController.userIdLoginGET);
+
+router.route('/:id/favs')
+  .get(UserController.userFavGET)
+  .put(UserController.userFavPUT)
+  .delete(UserController.userFavDELETE);
 
 module.exports = router;

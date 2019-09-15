@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Completar
 
 const User = new mongoose.Schema({
   username: {
@@ -15,7 +14,8 @@ const User = new mongoose.Schema({
   email: {
     type: String,
     required: true
-  }
+  },
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Books', default: [] }]
 });
 
 module.exports = new mongoose.model("User", User);

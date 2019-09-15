@@ -22,7 +22,7 @@ router.get(
     try {
       const token = await generateJWT(req.user._id);
 
-      return res.redirect(`${process.env.CLIENT_URL}/Home?token=${token}`);
+      return res.redirect(`${process.env.CLIENT_URL}/Home?token=${token}&id=${req.user._id}`);
     } catch (err) {
       console.log(err);
       return res.redirect(process.env.CLIENT_URL);
